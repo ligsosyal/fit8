@@ -12,3 +12,23 @@
 .fit8-3d-tag{position:absolute;top:12px;left:13px;padding:7px 10px;border:1px solid #405541;border-radius:99px;background:#172219d9;color:#c4d9b8;font:700 9px Manrope,sans-serif;letter-spacing:.7px;pointer-events:none}.fit8-3d-tag span{color:#9bd46e;margin:0 4px}
 .fit8-3d-controls{position:absolute;bottom:43px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #465a46;border-radius:14px;background:#172219eF;box-shadow:0 8px 22px #0005}.fit8-3d-controls button{width:32px;height:32px;border:0;border-radius:9px;background:#2c3d2e;color:#e5f0df;display:grid;place-items:center}.fit8-3d-controls span{min-width:35px;text-align:center;color:#cfe5c2;font-size:11px;font-weight:700}.fit8-3d-note{position:absolute;bottom:8px;left:12px;right:12px;margin:0;color:#aab9aa;font-size:9px;text-align:center;line-height:1.4;pointer-events:none}
 @media(max-width:650px){.fit8-3d-canvas{height:300px}.fit8-3d-tag{font-size:8px;max-width:calc(100% - 24px)}.fit8-3d-controls{bottom:44px}}
+
+/* Workout Motion SVG exercise player */
+.fit8-motion-wrap{width:100%;overflow:hidden;border:1px solid #354638;border-radius:18px;background:#111a14;color:#e8eee6}
+.fit8-motion-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#172219;border-bottom:1px solid #344536}
+.fit8-motion-badge{display:inline-flex;align-items:center;gap:8px;color:#cde5c5;font:800 9px Manrope,sans-serif;letter-spacing:.9px}
+.fit8-motion-badge i{width:7px;height:7px;border-radius:50%;background:#9bd46e;box-shadow:0 0 10px #9bd46e88}
+.fit8-motion-duration{color:#9eae9d;font-size:10px}
+.fit8-motion-stage{padding:14px;background:#111a14}
+.workout-motion{width:min(100%,390px);aspect-ratio:1;margin:0 auto;overflow:hidden;border-radius:14px;background:#f4f1e9;--figure-paper:#f4f1e9;--figure-ink:#252720;--figure-detail:#55594d;--figure-muted:#83877a}
+.workout-motion svg{display:block;width:100%;height:100%;max-width:100%}
+.fit8-motion-timeline{display:flex;align-items:center;gap:9px;padding:0 15px 10px;color:#9eae9d;font-size:8px;font-weight:800;letter-spacing:.5px}
+.fit8-motion-timeline input{flex:1;min-width:0;accent-color:#9bd46e;height:4px}
+.fit8-motion-controls{display:flex;align-items:center;justify-content:center;gap:9px;padding:0 12px 12px}
+.fit8-motion-controls button{width:34px;height:34px;border:1px solid #405541;border-radius:10px;background:#263729;color:#e5f0df;display:grid;place-items:center;cursor:pointer}
+.fit8-motion-controls button:active{transform:scale(.96)}
+.fit8-motion-controls strong{min-width:40px;text-align:center;color:#cfe5c2;font-size:11px}
+.fit8-motion-divider{height:22px;width:1px;background:#405541;margin:0 3px}
+.fit8-motion-note{margin:0;padding:0 14px 10px;color:#c9d3c5;font-size:10px;line-height:1.5;text-align:center}
+.fit8-motion-attribution{margin:0;padding:8px 12px;border-top:1px solid #2d3c2f;color:#849384;font-size:9px;text-align:center}
+@media(max-width:650px){.fit8-motion-stage{padding:9px}.workout-motion{width:100%}.fit8-motion-heading{padding:10px 12px}.fit8-motion-timeline{padding-left:12px;padding-right:12px}}
