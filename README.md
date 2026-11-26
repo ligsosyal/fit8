@@ -34,3 +34,9 @@ Firebase yapılandırma değerleri gizli servis hesabı anahtarı değildir. Fir
 Bu başlangıç sürümündeki hareket figürü yalnızca şematik bir yer tutucudur; doğru biyomekanik 3D animasyon değildir. Üretim sürümünde hareket bazında lisans ve doğruluk kontrolü yapılmış 3D GLB animasyonları entegre edilmelidir. Aşağıdaki açık kaynak projeler değerlendirme adaylarıdır:
 - Kimorel: https://github.com/alcazardaas/kimorel (proje yazılımı MIT, örnek içerik CC0; proje önizlemelerinin onay durumu ayrıca incelenmeli)
 - Desk Break: https://github.com/shlomorsh/desk-break (MIT; egzersiz kapsamı FIT8 hareketleriyle birebir örtüşmeyebilir)
+
+## Exercise animation library
+
+FIT8 uses `@februarysea/workout-motion` for continuous SVG exercise animations. Its motion catalog, playback API, and attribution/license requirements are documented in `WORKOUT-MOTION-LICENSE.md` and `CHANGELOG-HYBRID-MOTION.md`. The package requires Node.js 20 or newer. Vercel installs it through the normal `npm install` build step.
+
+The current FIT8 exercise IDs are mapped in `src/HybridExerciseViewer.jsx`. Plank is intentionally static because it is an isometric hold. Dumbbell glute bridge uses the base glute-bridge motion and includes an in-app note explaining the load variation.
