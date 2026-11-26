@@ -1,0 +1,31 @@
+.fit8-pro3d{width:100%;overflow:hidden;border:1px solid #354638;border-radius:17px;background:#111a14;color:#e8eee6;text-align:left}
+.fit8-pro3d-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 13px;background:#172219;border-bottom:1px solid #344536}
+.fit8-pro3d-badge{display:flex;align-items:center;gap:7px;color:#d2e6c9;font:800 9px Manrope,sans-serif;letter-spacing:.7px}
+.fit8-pro3d-badge i{width:7px;height:7px;border-radius:50%;background:#9bd46e;box-shadow:0 0 9px #9bd46e88}
+.fit8-pro3d-status{font-size:8px;letter-spacing:.7px;color:#9eae9d}
+.fit8-pro3d-stage{position:relative;background:radial-gradient(ellipse at 50% 45%,#26382a 0,#111a14 72%)}
+.fit8-pro3d-canvas{width:100%;height:390px;touch-action:pan-y}
+.fit8-pro3d-canvas canvas{display:block;width:100%;height:100%}
+.fit8-pro3d-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#111a14c9;color:#e6f0e1;font-size:13px;text-align:center;padding:20px}
+.fit8-pro3d-overlay small{color:#a8b8a7;font-size:10px}
+.fit8-pro3d-error{color:#ffd4b9}
+.fit8-pro3d-hint{position:absolute;bottom:9px;left:10px;right:48px;color:#a8b8a7;font-size:9px;text-shadow:0 1px 4px #000;text-align:center;pointer-events:none}
+.fit8-pro3d-camera{position:absolute;right:10px;bottom:8px;width:31px;height:31px;border:1px solid #53674f;border-radius:9px;background:#18251bdc;color:#e5f0df;display:grid;place-items:center}
+.fit8-pro3d-muscles{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:11px 12px;border-top:1px solid #2d3c2f}
+.fit8-pro3d-muscles>div{display:flex;flex-direction:column;gap:3px;margin-right:auto}
+.fit8-pro3d-muscles b,.fit8-pro3d-technique b{font:800 8px Manrope,sans-serif;letter-spacing:.8px;color:#cfe3c7}
+.fit8-pro3d-muscles small{font-size:8px;color:#899a8b}
+.fit8-pro3d-muscles span{font-size:8px;border:1px solid #63452b;border-radius:20px;padding:5px 7px;color:#ffc58d;background:#3a2b1e}
+.fit8-pro3d-muscles button{display:flex;align-items:center;gap:4px;border:0;background:transparent;color:#b9c9b5;font-size:9px;padding:5px}
+.fit8-pro3d-phase{text-align:center;color:#bfe39f;font:700 10px Manrope;padding:7px 10px 1px}
+.fit8-pro3d-timeline{display:flex;align-items:center;gap:8px;padding:7px 13px 9px;color:#9eae9d;font-size:8px;font-weight:800;letter-spacing:.4px}
+.fit8-pro3d-timeline input{flex:1;min-width:0;accent-color:#9bd46e;height:4px}
+.fit8-pro3d-controls{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px 12px}
+.fit8-pro3d-controls button{width:33px;height:33px;border:1px solid #405541;border-radius:9px;background:#263729;color:#e5f0df;display:grid;place-items:center}
+.fit8-pro3d-controls i{height:20px;width:1px;background:#405541;margin:0 4px}
+.fit8-pro3d-controls strong{min-width:38px;text-align:center;color:#cfe5c2;font-size:10px}
+.fit8-pro3d-technique{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 12px 12px}
+.fit8-pro3d-technique>div{background:#1b281e;border:1px solid #304333;border-radius:9px;padding:10px}
+.fit8-pro3d-technique p{font-size:9px;line-height:1.5;color:#b9c7b8;margin:5px 0 0}
+.fit8-pro3d-credit{margin:0;padding:8px 12px;border-top:1px solid #2d3c2f;color:#849384;font-size:8px;text-align:center}
+@media(max-width:650px){.fit8-pro3d-canvas{height:315px}.fit8-pro3d-top{padding:10px}.fit8-pro3d-badge{font-size:8px}.fit8-pro3d-technique{grid-template-columns:1fr}.fit8-pro3d-muscles span{font-size:7px;padding:4px 6px}}
