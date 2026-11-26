@@ -3,6 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
@@ -13,7 +17,7 @@
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@februarysea/workout-motion": "^0.2.0"
+    "@februarysea/workout-motion": "github:februarysea/workout-motion#424fbcc1548b6e14a2276bc0886c13c7a228eb81"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
