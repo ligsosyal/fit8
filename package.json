@@ -19,7 +19,8 @@
     "react-dom": "^19.0.0",
     "@februarysea/workout-motion": "github:februarysea/workout-motion#424fbcc1548b6e14a2276bc0886c13c7a228eb81",
     "humanforge": "^0.8.1",
-    "three": "^0.186.1"
+    "three": "^0.186.1",
+    "exercise-animations": "git+https://github.com/blwsk/exercise-animations.git#be16cb22c4ceb4ad134894250062fd0782410233"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
