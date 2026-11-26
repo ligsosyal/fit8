@@ -17,7 +17,9 @@
     "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@februarysea/workout-motion": "github:februarysea/workout-motion#424fbcc1548b6e14a2276bc0886c13c7a228eb81"
+    "@februarysea/workout-motion": "github:februarysea/workout-motion#424fbcc1548b6e14a2276bc0886c13c7a228eb81",
+    "humanforge": "^0.8.1",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",

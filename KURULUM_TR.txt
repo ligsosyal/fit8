@@ -1,0 +1,40 @@
+FIT8 – Goblet Squat 3D prototipi (erkek / atletik model)
+
+BU ZIP NELERİ DEĞİŞTİRİYOR?
+- Yeni GobletSquat3D.jsx bileşeni ekler.
+- Yeni CSS dosyası ekler.
+- package.json'a humanforge ve three bağımlılıklarını ekler.
+- Firebase, Firestore, kullanıcı kayıtları, antrenman verileri ve mevcut SVG hareket sistemi değiştirilmez.
+- Sadece Goblet Squat modalında yeni 3D görüntüleyici açılır.
+
+GITHUB'A YÜKLEME (mevcut dosyaları silmeden):
+1) ZIP'i telefonda çıkar.
+2) package.json dosyasını GitHub'da depo kökündeki package.json ile değiştir.
+3) src klasöründeki iki yeni dosyayı GitHub'da src klasörüne yükle:
+   - GobletSquat3D.jsx
+   - goblet-squat-3d.css
+4) src/main.jsx dosyasını GitHub'da açıp Edit (kalem) seçeneğine dokun.
+
+main.jsx DEĞİŞİKLİĞİ:
+A) Üstteki import satırlarının yanına ekle:
+   import GobletSquat3D from './GobletSquat3D';
+
+B) Dosyanın alt tarafında şu mevcut bölümü bul:
+   <div className="motion"><HybridExerciseViewer exerciseId={selected} name={exercises[selected].name}/></div>
+
+   Bunu aşağıdakiyle değiştir:
+   <div className="motion">
+     {selected === 'squat'
+       ? <GobletSquat3D />
+       : <HybridExerciseViewer exerciseId={selected} name={exercises[selected].name}/>}
+   </div>
+
+5) main.jsx değişikliğini kaydet / commit et.
+6) Vercel otomatik dağıtımı başlatır. Build log'da npm install ve npm run build adımlarının tamamlanmasını bekle.
+
+ÖNEMLİ:
+- Vercel Node.js sürümü 20 veya üzeri olmalı.
+- İlk 3D model yüklemesinde CDN üzerinden yaklaşık birkaç MB dosya indirilebilir; sonraki ziyaretlerde tarayıcı önbelleği yardımcı olur.
+- Goblet Squat 3D modeli HumanForge'un CC0 MakeHuman/MPFB varlıklarına dayanır. Model hareketi bu prototipte iskelet kemiklerine uygulanan prosedürel bir animasyondur; hazır bir profesyonel mocap Goblet Squat klibi değildir.
+- Turuncu kas işaretleri anatomik kas dokusu değil, yaklaşık bölge vurgularıdır.
+- Bu ilk prototipte eklem açıları ve hareket kalitesi cihaz üzerinde görsel olarak test edilmelidir. Tüm diğer hareketler eski workout-motion görüntüleyicisini kullanmaya devam eder.
