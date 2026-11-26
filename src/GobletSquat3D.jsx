@@ -5,15 +5,16 @@ import { HumanAvatar, loadHumanPackage } from 'humanforge/human';
 import { Pause, Play, RotateCcw, RotateCw, Minus, Plus, Eye, EyeOff } from 'lucide-react';
 import './goblet-squat-3d.css';
 
-// HumanForge's CC0 human asset pack. The model assets are loaded on demand and cached by the browser.
+// HumanForge CC0 insan modeli. Model dosyaları ilk açılışta CDN üzerinden yüklenir.
 const HUMAN_ASSETS = 'https://cdn.jsdelivr.net/gh/abdulrehman043/humanforge@v0.5.0/assets/human';
-const CYCLE_SECONDS = 4.2;
+const CYCLE_SECONDS = 4.8;
 const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 const smooth = (a, b, x) => {
   const t = clamp((x - a) / (b - a), 0, 1);
   return t * t * (3 - 2 * t);
 };
 
+// Basit dambıl modeli.
 function makeDumbbell() {
   const group = new THREE.Group();
   const metal = new THREE.MeshStandardMaterial({ color: 0x303a35, metalness: 0.82, roughness: 0.28 });
@@ -56,10 +57,12 @@ export default function GobletSquat3D() {
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(1);
   const [progress, setProgress] = useState(0);
-  const [showMuscles, setShowMuscles] = useState(true);
+  // Kas işaretleri ilk açılışta kapalı: vücudun formunu örtmesin.
+  const [showMuscles, setShowMuscles] = useState(false);
   const [phaseLabel, setPhaseLabel] = useState('Başlangıç pozisyonu');
   const playingRef = useRef(playing);
   const speedRef = useRef(speed);
+
   useEffect(() => {
     let alive = true;
     let raf = 0;
@@ -149,15 +152,16 @@ export default function GobletSquat3D() {
         scene.add(avatar.group);
 
         const bone = (name) => avatar.bones.find((b) => b.name === `mixamorig:${name}`);
-        const names = ['Hips','Spine','Spine1','Spine2','LeftUpLeg','RightUpLeg','LeftLeg','RightLeg',
-          'LeftFoot','RightFoot','LeftArm','RightArm','LeftForeArm','RightForeArm','LeftHand','RightHand'];
+        const names = ['Hips','Spine','Spine1','Spine2','LeftUpLeg','RightUpLeg',
+          'LeftLeg','RightLeg','LeftFoot','RightFoot','LeftArm','RightArm',
+          'LeftForeArm','RightForeArm','LeftHand','RightHand'];
         const bones = Object.fromEntries(names.map((name) => [name, bone(name)]));
         const rest = {};
         Object.entries(bones).forEach(([name, b]) => {
           if (b) rest[name] = { rotation: b.rotation.clone(), position: b.position.clone() };
         });
 
-        // Dumbbell and translucent muscle-region markers are attached to the rig, so they follow the pose.
+        // Dambıl göğüs/üst gövde iskeletine bağlıdır; kas vurguları isteğe bağlıdır.
         const weight = makeDumbbell();
         const chest = bones.Spine2 || bones.Spine1;
         if (chest) {
@@ -165,6 +169,7 @@ export default function GobletSquat3D() {
           weight.rotation.set(0.12, 0, 0);
           chest.add(weight);
         }
+
         const markers = [];
         ['LeftUpLeg','RightUpLeg'].forEach((name) => {
           if (bones[name]) markers.push(addMuscleMarker(bones[name], [0, -0.2, 0.045], [0.075, 0.2, 0.035]));
@@ -174,6 +179,16 @@ export default function GobletSquat3D() {
           markers.push(addMuscleMarker(bones.Hips, [0.105, -0.08, -0.12], [0.105, 0.09, 0.055]));
         }
         if (bones.Spine1) markers.push(addMuscleMarker(bones.Spine1, [0, 0.02, 0.095], [0.12, 0.19, 0.035]));
+        markers.forEach((m) => { m.visible = false; });
+
+        // Tekrarın fazları: kontrollü iniş, kısa alt pozisyon beklemesi ve yükseliş.
+        const depthAt = (p) => (
+          p < 0.08 ? 0
+            : p < 0.40 ? smooth(0.08, 0.40, p)
+            : p < 0.50 ? 1
+            : p < 0.84 ? 1 - smooth(0.50, 0.84, p)
+            : 0
+        );
 
         const applyPose = (depth) => {
           const setX = (name, delta) => {
@@ -184,27 +199,37 @@ export default function GobletSquat3D() {
             const b = bones[name], r = rest[name];
             if (b && r) { b.rotation.copy(r.rotation); b.rotation.y += delta; }
           };
-          ['Hips','Spine','Spine1','Spine2','LeftUpLeg','RightUpLeg','LeftLeg','RightLeg',
-            'LeftFoot','RightFoot','LeftArm','RightArm','LeftForeArm','RightForeArm'].forEach((n) => {
-              if (bones[n] && rest[n]) bones[n].rotation.copy(rest[n].rotation);
-            });
-          // Arms remain flexed around the chest-held dumbbell throughout the repetition.
-          setX('LeftArm', -0.78); setX('RightArm', -0.78);
-          setX('LeftForeArm', -0.72); setX('RightForeArm', -0.72);
-          setY('LeftArm', -0.12); setY('RightArm', 0.12);
-          // Controlled squat: hip/knee flexion, small ankle contribution and stable torso.
-          setX('LeftUpLeg', -0.78 * depth);
-          setX('RightUpLeg', -0.78 * depth);
-          setX('LeftLeg', 1.28 * depth);
-          setX('RightLeg', 1.28 * depth);
-          setX('LeftFoot', -0.18 * depth);
-          setX('RightFoot', -0.18 * depth);
-          setX('Spine', 0.07 * depth);
-          setX('Spine1', 0.11 * depth);
+
+          Object.keys(bones).forEach((name) => {
+            if (bones[name] && rest[name]) bones[name].rotation.copy(rest[name].rotation);
+          });
+
+          // Kollar göğüs önünde dambıl tutuşunu koruyacak şekilde bükülü.
+          setX('LeftArm', -0.56);
+          setX('RightArm', -0.56);
+          setX('LeftForeArm', -1.02);
+          setX('RightForeArm', -1.02);
+          setY('LeftArm', -0.10);
+          setY('RightArm', 0.10);
+
+          // Alt ekstremite eklem hareketleri. Açılar modelin Mixamo yerel eksenlerine bağlıdır.
+          setX('LeftUpLeg', -0.98 * depth);
+          setX('RightUpLeg', -0.98 * depth);
+          setX('LeftLeg', 1.78 * depth);
+          setX('RightLeg', 1.78 * depth);
+          setX('LeftFoot', -0.36 * depth);
+          setX('RightFoot', -0.36 * depth);
+
+          // Gövde dengesi için sınırlı öne eğim.
+          setX('Spine', 0.10 * depth);
+          setX('Spine1', 0.13 * depth);
           setX('Spine2', 0.04 * depth);
+
           if (bones.Hips && rest.Hips) {
             bones.Hips.position.copy(rest.Hips.position);
-            bones.Hips.position.y -= 0.13 * depth;
+            // Pelvis aşağı ve hafif geriye gider; yatay/derinlik yönü rig'e göre doğrulanmalıdır.
+            bones.Hips.position.y -= 0.30 * depth;
+            bones.Hips.position.z -= 0.16 * depth;
           }
         };
 
@@ -222,7 +247,10 @@ export default function GobletSquat3D() {
 
         engineRef.current = {
           camera, controls, renderer,
-          setProgress: (p) => { engineRef.current.progress = p; applyPose(0.5 - 0.5 * Math.cos(p * Math.PI * 2)); },
+          setProgress: (p) => {
+            engineRef.current.progress = p;
+            applyPose(depthAt(p));
+          },
           resetCamera: () => {
             camera.position.set(0, 1.05, 3.55);
             controls.target.set(0, 0.92, 0);
@@ -243,14 +271,18 @@ export default function GobletSquat3D() {
             engineRef.current.progress = (engineRef.current.progress + dt * speedRef.current / CYCLE_SECONDS) % 1;
           }
           const p = engineRef.current.progress;
-          const depth = 0.5 - 0.5 * Math.cos(p * Math.PI * 2);
-          applyPose(depth);
+          applyPose(depthAt(p));
           controls.update();
           renderer.render(scene, camera);
           if (now - lastUi > 100) {
             lastUi = now;
             setProgress(p);
-            setPhaseLabel(p < 0.12 || p > 0.88 ? 'Ayakta · başlangıç' : p < 0.42 ? 'Kontrollü iniş' : p < 0.58 ? 'Alt pozisyon' : 'Kontrollü yükseliş');
+            setPhaseLabel(
+              p < 0.08 || p > 0.84 ? 'Ayakta · başlangıç'
+                : p < 0.40 ? 'Kontrollü iniş'
+                : p < 0.50 ? 'Alt pozisyonda bekle'
+                : 'Kontrollü yükseliş'
+            );
           }
         };
         raf = requestAnimationFrame(tick);
@@ -296,7 +328,7 @@ export default function GobletSquat3D() {
   return (
     <section className="fit8-pro3d">
       <div className="fit8-pro3d-top">
-        <span className="fit8-pro3d-badge"><i /> GERÇEKÇİ 3D · GOBLET SQUAT</span>
+        <span className="fit8-pro3d-badge"><i /> 3D · GOBLET SQUAT</span>
         <span className="fit8-pro3d-status">{status === 'loading' ? 'MODEL YÜKLENİYOR' : status === 'error' ? 'YÜKLEME HATASI' : 'ETKİLEŞİMLİ MODEL'}</span>
       </div>
       <div className="fit8-pro3d-stage">
@@ -307,7 +339,7 @@ export default function GobletSquat3D() {
         <button className="fit8-pro3d-camera" onClick={resetCamera} type="button" title="Kamerayı sıfırla"><RotateCw size={15} /></button>
       </div>
       <div className="fit8-pro3d-muscles">
-        <div><b>ÇALIŞAN KAS GRUPLARI</b><small>Turuncu bölgeler temsili vurgudur.</small></div>
+        <div><b>ÇALIŞAN KAS GRUPLARI</b><small>Kas vurguları yaklaşık gösterimdir.</small></div>
         <button type="button" onClick={toggleMuscles}>{showMuscles ? <Eye size={14}/> : <EyeOff size={14}/>} {showMuscles ? 'Gizle' : 'Göster'}</button>
         <span>Quadriceps</span><span>Gluteus</span><span>Core stabilizatörleri</span>
       </div>
